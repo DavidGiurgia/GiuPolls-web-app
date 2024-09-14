@@ -1,0 +1,133 @@
+
+.navContainer{
+    width: 100%;
+    height: 60px;
+    background-color: white;
+    padding: 10px;
+    position: fixed;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /*border-bottom: 1px solid rgba(142, 142, 142, 0.384);*/
+}
+
+.leftSide{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 8px;
+    gap: 20px;
+}
+
+.menuIcon{
+    width: 25px;
+    padding: 0px;
+}
+
+.logoIcon{
+    width: 40px;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Playpen Sans", cursive;
+    font-size: 1.7rem; 
+    font-weight: 600; 
+    letter-spacing: 1px; 
+    cursor: pointer;
+    gap: 8px;
+    color: #001F3F; /**/
+}
+
+.searchContainer{
+    flex: 0.7;
+    height: 40px;
+    border-radius: 30px;
+    border: none;
+    display: flex;
+    justify-content: center;
+    background-color:#efefef;
+}
+
+.searchInput{
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 30px;
+    outline: none;
+    background-color: transparent;
+    font-size: large;
+}
+
+.searchContainer:hover{
+    background-color:#E0E0E0;
+}
+
+.searchIcon{
+    padding: 12px 0px 12px 10px;
+}
+
+
+.userSection{
+    display: flex;
+    justify-content: space-between;
+    margin-right: 8px;
+    gap: 20px;
+}
+
+.createBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background-color: #efefef;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 50px;
+    font-size: 16px;
+}
+
+.createBtn:hover{
+    background-color: #E0E0E0;
+}
+
+.createIcon{
+    width: 20px;
+}
+
+.iconBtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50px;
+    width: 40px;
+    height: 40px;
+    border: none;
+    background-color: transparent;
+}
+
+.iconBtn:hover{
+    background-color:#E0E0E0;
+}
+
+
+
+.profilePic{
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    transition: transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .logo{
+        font-size: 20px;
+    }
+
+    .navBtn{
+        padding: 8px;
+    }
+  }
+  

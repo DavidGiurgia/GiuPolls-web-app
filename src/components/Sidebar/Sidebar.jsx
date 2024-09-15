@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom'; // Import Link from react-router-dom
 import styles from './Sidebar.module.css';
 import Footer from '../Footer/Footer';
 
@@ -11,29 +12,33 @@ export default function Sidebar() {
   const [activeCategory, setActiveCategory] = useState("Home");
 
   const categories = [
-    { name: "Home", icon: homeIcon },
-    { name: "Popular", icon: popularIcon },
-    { name: "Explore", icon: exploreIcon },
-    { name: "All", icon: allIcon }
+    { name: "Home", icon: homeIcon, path: "/" },        // Add path for Home
+    { name: "Popular", icon: popularIcon, path: "/popular" },  // Add path for Popular
+    { name: "Explore", icon: exploreIcon, path: "/shortPolls" },  // Add path for Explore (short polls)
+    { name: "All", icon: allIcon, path: "/all" }            // Add path for All
   ];
 
-  return <>
-    <div className={styles.sidebar}>
-      <ul id="category-list">
-        {categories.map((category) => (
-          <li
-            key={category.name}
-            className={activeCategory === category.name ? styles.active : ""}
-            onClick={() => setActiveCategory(category.name)}
-          >
-            <img src={category.icon} alt={category.name} className={styles.icon} />
-            {category.name}
-          </li>
-        ))}
-      </ul>
-      <hr />
-    </div>
+  return (
+    <>
+      <div className={styles.sidebar}>
+        <ul id="category-list">
+          {categories.map((category) => (
+            <li
+              key={category.name}
+              className={activeCategory === category.name ? styles.active : ""}
+              onClick={() => setActiveCategory(category.name)}
+            >
+              <Link to={category.path} className={styles.link}> {/* Use Link to navigate */}
+                <img src={category.icon} alt={category.name} className={styles.icon} />
+                {category.name}
+              </Link>
+            </li>
+          ))}
+        </ul>
+        <hr />
+      </div>
 
-    <Footer/>
-  </>
+      <Footer />
+    </>
+  );
 }

@@ -18,8 +18,12 @@
     list-style-type: none;
     padding: 0;
   }
+
+  .sidebar ul li{
+    border-radius: 8px;
+  }
   
-  .sidebar ul li {
+  .link {
     width: 100%;
     padding: 10px 30px;
     cursor: pointer;

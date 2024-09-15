@@ -1,5 +1,5 @@
 import { useState } from "react";
-import styles from "./CreatePoll.module.css"; 
+import styles from "./CreatePoll.module.css";
 
 const CreatePoll = () => {
   const [pollTitle, setPollTitle] = useState("");
@@ -8,8 +8,8 @@ const CreatePoll = () => {
 
   // Function to add new poll options
   const addPollOption = () => {
-    if(pollOptions.length < 6){
-        setPollOptions([...pollOptions, ""]);
+    if (pollOptions.length < 6) {
+      setPollOptions([...pollOptions, ""]);
     }
   };
 
@@ -35,7 +35,7 @@ const CreatePoll = () => {
 
   return (
     <div className={styles.createPollContainer}>
-      <h1 className={styles.header}>Create Poll</h1>
+      <h1 className={styles.header}>Poll</h1>
       <form onSubmit={handleSubmit}>
         <div className={styles.formSection}>
           <label className={styles.label}>Title</label>
@@ -66,7 +66,7 @@ const CreatePoll = () => {
             type="button"
             onClick={addPollOption}
             className={styles.addOptionButton}
-            disabled={pollOptions.length >= 6} 
+            disabled={pollOptions.length >= 6}
           >
             + Add more options
           </button>
@@ -94,10 +94,6 @@ const CreatePoll = () => {
             {/* Add more categories here */}
           </select>
         </div>
-
-        <button type="submit" className={styles.submitButton}>
-          Create Poll
-        </button>
       </form>
     </div>
   );

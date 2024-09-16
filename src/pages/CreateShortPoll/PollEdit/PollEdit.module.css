@@ -27,6 +27,10 @@
   border: 1px solid #ccc;
 }
 
+.pollComponent{
+  margin: 8px 0px;
+}
+
 .pollTypeSelector {
   display: flex;
   justify-content: space-between;
@@ -37,7 +41,8 @@
 .pollTypeSelector button {
   padding: 10px 20px;
   border: none;
-  background-color: #f0f0f0;
+  border-radius: 50px;
+  background-color: transparent;
   border-radius: 5px;
   cursor: pointer;
 }
@@ -47,8 +52,8 @@
 }
 
 .pollTypeSelector button.active {
-  background-color: #007bff;
-  color: white;
+  background-color: #ccc;
+  font-weight: bold;
 }
 
 .footer {
@@ -58,24 +63,23 @@
 }
 
 .cancelButton {
-  background-color: #f44336;
-  color: white;
+  background-color: transparent;
   padding: 10px 20px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   cursor: pointer;
 }
 
 .cancelButton:hover {
-  background-color: #d32f2f;
+  background-color: #e0e0e0;
 }
 
 .postButton {
   background-color: #4caf50;
   color: white;
-  padding: 10px 20px;
+  padding: 10px 40px;
   border: none;
-  border-radius: 5px;
+  border-radius: 50px;
   margin-left: 10px;
   cursor: pointer;
 }

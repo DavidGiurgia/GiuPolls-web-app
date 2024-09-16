@@ -5,14 +5,16 @@ import TextPoll from "../types/TextPoll/TextPoll.jsx";
 import QuizPoll from "../types/QuizPoll/QuizPoll.jsx";
 import Slider from "../types/SliderPoll/Slider.jsx";
 
-
 import styles from "./PollEdit.module.css";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const PollDetails = () => {
-  const [pollTitle, setPollTitle] = useState("");
+  const navigate = useNavigate();
+
+  const [pollTitle] = useState("");
   const [visibility, setVisibility] = useState("Public");
-  const [pollType, setPollType] = useState("");
+  const [pollType, setPollType] = useState("question");
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -106,7 +108,7 @@ const PollDetails = () => {
       <div className={styles.footer}>
         <button
           className={styles.cancelButton}
-          onClick={() => console.log("Cancel")}
+          onClick={() => navigate("/")}
         >
           Cancel
         </button>

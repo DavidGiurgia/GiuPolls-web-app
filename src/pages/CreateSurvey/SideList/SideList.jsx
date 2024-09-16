@@ -7,7 +7,7 @@ const SideList = ({ polls, setPolls, onSelectPoll }) => {
     const newPoll = {
       id: Date.now(),
       type: pollType,
-      title: `Poll ${polls.length + 1}`,
+      title: pollType,
       options: ["Option 1", "Option 2"],
     };
     setPolls([...polls, newPoll]);
@@ -46,19 +46,19 @@ const SideList = ({ polls, setPolls, onSelectPoll }) => {
       <div className={styles.addButtonContainer}>
         <button
           className={styles.addButton}
-          onClick={() => addPoll("poll")}
+          onClick={() => addPoll("Poll")}
         >
           + Add Poll
         </button>
         <button
           className={styles.addButton}
-          onClick={() => addPoll("versus")}
+          onClick={() => addPoll("Versus")}
         >
           + Add Versus
         </button>
         <button
           className={styles.addButton}
-          onClick={() => addPoll("slider")}
+          onClick={() => addPoll("Slider")}
         >
           + Add Slider
         </button>

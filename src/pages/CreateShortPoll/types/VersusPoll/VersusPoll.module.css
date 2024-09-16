@@ -1,0 +1,36 @@
+.pollContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    width: 100%;
+  }
+  
+  .questionInput {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: vertical;
+    min-height: 80px;
+    outline: none;
+  }
+  
+  .versusOptions {
+    display: flex;
+    gap: 15px;
+  }
+  
+  .fileInput {
+    padding: 8px;
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    outline: none;
+    cursor: pointer;
+    flex-grow: 1;
+  }
+  
+  .fileInput:focus {
+    border-color: #007bff;
+  }
+  

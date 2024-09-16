@@ -8,7 +8,6 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    /*border-bottom: 1px solid rgba(142, 142, 142, 0.384);*/
 }
 
 .leftSide{
@@ -94,7 +93,8 @@
 }
 
 .createIcon{
-    width: 20px;
+    width: 24px;
+    height: 24px;
 }
 
 .iconBtn{

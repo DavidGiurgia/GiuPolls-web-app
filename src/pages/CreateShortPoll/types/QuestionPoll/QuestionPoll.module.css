@@ -1,0 +1,20 @@
+.pollContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+}
+
+.questionInput {
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  resize: vertical;
+  min-height: 80px;
+  outline: none;
+}
+
+.questionInput:focus {
+  border-color: #007bff;
+}

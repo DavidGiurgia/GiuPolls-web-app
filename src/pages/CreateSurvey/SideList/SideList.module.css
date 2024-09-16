@@ -20,10 +20,12 @@
   border-radius: 4px;
   cursor: pointer;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .removeButton {
-  position: absolute;
   right: 10px;
   top: 10px;
   background-color: red;
@@ -43,7 +45,5 @@
   color: white;
   border: none;
   padding: 8px 12px;
-  margin-right: 8px;
   border-radius: 4px;
-  cursor: pointer;
 }

@@ -1,7 +1,32 @@
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styles from "./NavBar.module.css";
+import DropdownButton from '../../components/DropdownButton/DropdownButton.jsx'
+
+import createIcon from '/assets/black-plus.png';
+import shortIcon from '/assets/shortIcon.png';
+import surveyIcon from '/assets/surveyIcon.png';
+
+
 
 export default function NavBar() {
+
+  const navigate = useNavigate();
+
+  const handleShort = () => {
+    navigate("/createShortPoll");
+  };
+  
+  const handleSurvey = () => {
+    navigate("/createSurvey");
+  };
+  
+
+  const options = [
+    { label: "Short poll", icon: shortIcon, onClick: handleShort },
+    { label: "Survey", icon: surveyIcon, onClick: handleSurvey }
+  ];
+
   return (
     <div className={styles.navContainer}>
       <div className={styles.leftSide}>
@@ -29,16 +54,13 @@ export default function NavBar() {
       </div>
 
       <div className={styles.userSection}>
-        <Link className="no-decoration" to={'/createPoll'}>
-          <button className={styles.createBtn}>
-            <img
-              src="assets/black-plus.png"
-              alt=""
-              className={styles.createIcon}
-            />
-            Create
-          </button>
-        </Link>
+        <div>
+          <DropdownButton
+            buttonText="Create"
+            buttonIcon={createIcon}
+            options={options}
+          />
+        </div>
 
         <button className={styles.iconBtn}>
           <img src="assets/bell.png" alt="" className={styles.profilePic} />

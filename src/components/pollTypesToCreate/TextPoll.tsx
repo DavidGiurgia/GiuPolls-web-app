@@ -33,8 +33,9 @@ const TextPoll = ({ onChange }: TextPollProps) => {
     <VStack spacing={4}>
       {/* Întrebarea principală */}
       <FormControl>
-        <FormLabel>Enter your question</FormLabel>
         <Input
+          variant={"flushed"}
+          focusBorderColor="purple.500"
           marginBottom={3}
           placeholder="Type your question here..."
           value={question}
@@ -43,24 +44,21 @@ const TextPoll = ({ onChange }: TextPollProps) => {
       </FormControl>
 
       <FormControl>
-        <FormLabel>Text Poll</FormLabel>
         {options.map((option, index) => (
           <HStack key={index}>
-            {options.length > 2 && (
-              <Button
-                _hover={"bg: none"}
-                size="sm"
-                onClick={() => removeOption(index)}
-              >
-                <CloseButton size="md" />
-              </Button>
-            )}
             <Input
+              focusBorderColor="yellow.400"
               marginBottom={3}
               placeholder={`Option ${index + 1}`}
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
             />
+            {options.length > 2 && (
+              <CloseButton
+                size="md"
+                onClick={() => removeOption(index)}
+              ></CloseButton>
+            )}
           </HStack>
         ))}
       </FormControl>
@@ -68,8 +66,7 @@ const TextPoll = ({ onChange }: TextPollProps) => {
       <FormControl>
         <Button
           leftIcon={<AddIcon />}
-          colorScheme="blue"
-          variant="outline"
+          variant="ghost"
           onClick={addOption}
           isDisabled={options.length >= 5}
         >

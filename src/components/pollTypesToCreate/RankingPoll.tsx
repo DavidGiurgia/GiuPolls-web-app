@@ -9,11 +9,11 @@ import {
 } from "@chakra-ui/react";
 import { FileUploader } from "../shared";
 
-type VersusPollProps = {
+type RankingPollProps = {
   onChange: (files: File[], optionIndex: number) => void;
 };
 
-const VersusPoll = ({ onChange }: VersusPollProps) => {
+const RankingPoll = ({ onChange }: RankingPollProps) => {
   const [showInputs, setShowInputs] = useState<boolean>(true);
   const [question, setQuestion] = useState<string>("");
 
@@ -80,4 +80,4 @@ const VersusPoll = ({ onChange }: VersusPollProps) => {
   );
 };
 
-export default VersusPoll;
+export default RankingPoll;

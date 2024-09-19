@@ -31,10 +31,9 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
     <VStack spacing={4}>
       {/* Întrebarea principală */}
       <FormControl>
-        <FormLabel textAlign="left" marginBottom={1}>
-          Enter your question
-        </FormLabel>
         <Input
+        variant={'flushed'}
+          focusBorderColor="purple.400"
           marginBottom={3}
           placeholder="Type your question here..."
           value={question}
@@ -45,7 +44,7 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
       {/* Switch pentru a arăta sau ascunde inputurile */}
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="toggle-inputs" mb="0">
-          Show Option Inputs
+          Use option text
         </FormLabel>
         <Switch
           id="toggle-inputs"
@@ -61,18 +60,18 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
             <VStack key={index} spacing={2} width="100%">
               {showInputs && (
                 <FormControl>
-                  <FormLabel textAlign="left" marginBottom={1}>
-                    Option {index + 1}
-                  </FormLabel>
                   <Input
+                    focusBorderColor="yellow.400"
                     marginBottom={3}
-                    placeholder={`Enter option ${index + 1}`}
+                    placeholder={`Option ${index + 1}`}
                   />
                 </FormControl>
               )}
               <FileUploader
                 fieldChange={(file) => onChange(file, index)}
                 mediaUrl=""
+                width={"full"}
+                height={"250px"}
               />
             </VStack>
           );
@@ -82,18 +81,18 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
               <VStack key={index + 1} spacing={2} width="100%">
                 {showInputs && (
                   <FormControl>
-                    <FormLabel textAlign="left" marginBottom={1}>
-                      Option {index + 2}
-                    </FormLabel>
                     <Input
+                      focusBorderColor="yellow.400"
                       marginBottom={3}
-                      placeholder={`Enter option ${index + 2}`}
+                      placeholder={`Option ${index + 2}`}
                     />
                   </FormControl>
                 )}
                 <FileUploader
                   fieldChange={(file) => onChange(file, index + 1)}
                   mediaUrl=""
+                  width={"full"}
+                  height={"250px"}
                 />
               </VStack>
             ) : null;
@@ -109,10 +108,9 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
       }, [])}
 
       <HStack spacing={4}>
-      <Button
+        <Button
           leftIcon={<AddIcon />}
-          colorScheme="blue"
-          variant="outline"
+          variant="ghost"
           onClick={addOptions}
           isDisabled={options.length >= 4}
         >
@@ -121,11 +119,11 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
         <Button
           leftIcon={<MinusIcon />}
           colorScheme="red"
-          variant="outline"
+          variant="ghost"
           onClick={removeOptions}
           isDisabled={options.length <= 2}
         >
-          Remove Options 
+          Remove Options
         </Button>
       </HStack>
     </VStack>

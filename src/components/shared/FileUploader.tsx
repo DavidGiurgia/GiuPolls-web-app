@@ -1,22 +1,23 @@
+import { CiImageOn } from "react-icons/ci";
+
 import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
-import { FaUpload } from "react-icons/fa6";
-import {
-  Box,
-  Button,
-  Image,
-  Text,
-  Flex,
-  VStack,
-} from "@chakra-ui/react";
+import { Box, Image, Text, VStack } from "@chakra-ui/react";
 import { convertFileToUrl } from "../../lib/utils";
 
 type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
   mediaUrl: string;
+  width: string;
+  height: string;
 };
 
-const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
+const FileUploader = ({
+  fieldChange,
+  mediaUrl,
+  width,
+  height,
+}: FileUploaderProps) => {
   const [file, setFile] = useState<File[]>([]);
   const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
 
@@ -38,51 +39,58 @@ const FileUploader = ({ fieldChange, mediaUrl }: FileUploaderProps) => {
 
   return (
     <Box
-      width='fit' // lățime fixă
-      height="250px" // înălțime fixă
-      {...getRootProps()}
-      bg="gray.700"
-      borderRadius="xl"
-      cursor="pointer"
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      justifyContent="center"
-      overflow="hidden"
-    >
-      <input {...getInputProps()} style={{ display: "none" }} />
-
-      {fileUrl ? (
-        <>
-          <Flex
-            align="center"
-            justify="center"
-            w="full"
-            h="full" // asigură-te că Flex-ul umple întregul box
-          >
-            <Image
-              src={fileUrl}
-              alt="image"
-              width="100%"
-              height="100%"
-              objectFit="cover" // imaginea va acoperi întreaga zonă
-              borderRadius="md"
-            />
-          </Flex>
-        </>
-      ) : (
-        <VStack spacing={4}>
-          <FaUpload style={{ fontSize: '24px', marginTop: '50px' }} />
-          <Text fontSize="lg" color="gray.200">
-            Drag photo here
+    width={width}
+    height={height}
+    {...getRootProps()}
+    bg="gray.700"
+    borderRadius="xl"
+    cursor="pointer"
+    display="flex"
+    flexDirection="column"
+    alignItems="center"
+    justifyContent="center"
+    overflow="hidden"
+    aspectRatio="4/3" // sau 16/9 sau 1/1
+    position="relative"
+    maxWidth="100%"
+  >
+    <input {...getInputProps()} style={{ display: "none" }} />
+  
+    {fileUrl ? (
+      <Box
+        width="100%"
+        height="100%"
+        overflow="hidden"
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        position="relative"
+      >
+        <Image
+          src={fileUrl}
+          alt="image"
+          width="100%"
+          height="100%"
+          objectFit="contain" // Sau 'contain' dacă dorești să vezi întreaga imagine
+        />
+        {/* Adaugă un overlay pentru drag & drop */}
+      </Box>
+    ) : (
+      <VStack spacing={4}>
+        <CiImageOn color="white" fontSize={"50px"} />
+        <Text textAlign={"center"} fontSize="lg" color="gray.200">
+          Drag photo here or <br />
+          <Text  color="yellow.400">
+            <strong>select from your computer</strong>
           </Text>
-          <Text fontSize="sm" color="gray.400">
-            SVG, PNG, JPG
-          </Text>
-          <Button width={'90%'} colorScheme="yellow">Select from computer</Button>
-        </VStack>
-      )}
-    </Box>
+        </Text>
+        <Text fontSize="sm" color="gray.400">
+          SVG, PNG, JPG
+        </Text>
+      </VStack>
+    )}
+  </Box>
+  
   );
 };
 

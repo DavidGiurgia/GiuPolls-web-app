@@ -3,22 +3,22 @@ import {
   VStack,
   HStack,
   FormControl,
-  FormLabel,
   Input,
   Button,
-  Radio,
-  RadioGroup,
+  Checkbox,
+  CheckboxGroup,
   CloseButton,
 } from "@chakra-ui/react";
 import { AddIcon } from "@chakra-ui/icons";
 
 type QuizPollProps = {
-  onChange: (options: string[], correct: string) => void;
+  onChange: (options: string[], correct: string[]) => void; // actualizăm tipul pentru opțiuni multiple corecte
 };
 
 const QuizPoll = ({ onChange }: QuizPollProps) => {
+  const [question, setQuestion] = useState<string>("");
   const [options, setOptions] = useState<string[]>(["", ""]);
-  const [correctOption, setCorrectOption] = useState<string>("");
+  const [correctOption, setCorrectOption] = useState<string[]>([]); // folosim un array de stringuri pentru multiple opțiuni corecte
 
   const addOption = () => setOptions([...options, ""]);
   const removeOption = (index: number) =>
@@ -28,41 +28,55 @@ const QuizPoll = ({ onChange }: QuizPollProps) => {
     const newOptions = [...options];
     newOptions[index] = value;
     setOptions(newOptions);
-    onChange(newOptions, correctOption);
+    onChange(newOptions, correctOption); // actualizăm și starea la schimbare
+  };
+
+  const handleCorrectOptionChange = (values: string[]) => {
+    setCorrectOption(values);
+    onChange(options, values); // trimitem opțiunile și răspunsurile corecte în callback
   };
 
   return (
     <VStack spacing={4}>
+      {/* Întrebarea principală */}
       <FormControl>
-        <FormLabel>Quiz</FormLabel>
+        <Input
+          focusBorderColor="purple.400"
+          variant="flushed"
+          marginBottom={3}
+          placeholder="Type your question here..."
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
+      </FormControl>
+
+      <FormControl>
         {options.map((option, index) => (
           <HStack key={index}>
-            {options.length > 2 && (
-              <Button
-                _hover={"bg: none"}
-                size="sm"
-                onClick={() => removeOption(index)}
-              >
-                <CloseButton size="md" />
-              </Button>
-            )}
+            {/* CheckboxGroup pentru opțiuni multiple */}
+            <CheckboxGroup value={correctOption} onChange={handleCorrectOptionChange}>
+              <Checkbox colorScheme="green" value={`${index}`} />
+            </CheckboxGroup>
             <Input
+              focusBorderColor="yellow.400"
               marginBottom={3}
               placeholder={`Option ${index + 1}`}
               value={option}
               onChange={(e) => handleOptionChange(index, e.target.value)}
             />
-            <RadioGroup value={correctOption} onChange={setCorrectOption}>
-              <Radio value={`${index}`}>Correct</Radio>
-            </RadioGroup>
+            {options.length > 2 && (
+              <CloseButton
+                size="md"
+                onClick={() => removeOption(index)}
+              ></CloseButton>
+            )}
           </HStack>
         ))}
       </FormControl>
       <FormControl>
         <Button
           leftIcon={<AddIcon />}
-          colorScheme="blue"
-          variant="outline"
+          variant="ghost"
           onClick={addOption}
           isDisabled={options.length >= 5}
         >

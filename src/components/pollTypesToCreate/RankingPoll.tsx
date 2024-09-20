@@ -6,23 +6,35 @@ import {
   FormLabel,
   Input,
   Switch,
+  Button,
 } from "@chakra-ui/react";
 import { FileUploader } from "../shared";
+import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 type RankingPollProps = {
   onChange: (files: File[], optionIndex: number) => void;
 };
 
 const RankingPoll = ({ onChange }: RankingPollProps) => {
+  const [options, setOptions] = useState<string[]>(["", ""]);
   const [showInputs, setShowInputs] = useState<boolean>(true);
   const [question, setQuestion] = useState<string>("");
 
+  const addOptions = () => setOptions([...options, "", ""]);
+  const removeOptions = () => {
+    if (options.length > 2) {
+      setOptions(options.slice(0, -2));
+    }
+  };
+
   return (
-    <VStack spacing={4} width="100%">
+    <VStack spacing={4}>
       {/* Întrebarea principală */}
       <FormControl>
-        <FormLabel>Enter your question</FormLabel>
         <Input
+          _placeholder={{ opacity: 1, color: "gray.400" }}
+          variant={"flushed"}
+          focusBorderColor="purple.400"
           marginBottom={3}
           placeholder="Type your question here..."
           value={question}
@@ -33,7 +45,7 @@ const RankingPoll = ({ onChange }: RankingPollProps) => {
       {/* Switch pentru a arăta sau ascunde inputurile */}
       <FormControl display="flex" alignItems="center">
         <FormLabel htmlFor="toggle-inputs" mb="0">
-          Show Option Inputs
+          Use option text
         </FormLabel>
         <Switch
           id="toggle-inputs"
@@ -42,39 +54,80 @@ const RankingPoll = ({ onChange }: RankingPollProps) => {
         />
       </FormControl>
 
-      {/* Aranjare opțiuni responsive */}
-      <HStack spacing={4} width="100%" wrap="wrap">
-        <VStack spacing={2} width={{ base: "100%", sm: "48%" }} align="stretch">
-          {showInputs && (
-            <>
-              <FormControl>
-                <FormLabel>Option 1</FormLabel>
-                <Input
-                  marginBottom={3}
-                  placeholder="Enter option 1 text..."
-                  width="100%"
-                />
-              </FormControl>
-            </>
-          )}
-          <FileUploader fieldChange={(file) => onChange(file, 0)} mediaUrl="" />
-        </VStack>
+      {/* Aranjare opțiuni două câte două */}
+      {options.reduce<JSX.Element[]>((acc, _, index) => {
+        if (index % 2 === 0) {
+          const firstOption = (
+            <VStack key={index} spacing={2} width="100%">
+              {showInputs && (
+                <FormControl>
+                  <Input
+                    focusBorderColor="yellow.400"
+                    marginBottom={3}
+                    placeholder={`Option ${index + 1}`}
+                  />
+                </FormControl>
+              )}
+              <FileUploader
+                fieldChange={(file) => onChange(file, index)}
+                mediaUrl=""
+                width={"full"}
+                height={"250px"}
+                isOptional={true}
+              />
+            </VStack>
+          );
 
-        <VStack spacing={2} width={{ base: "100%", sm: "48%" }} align="stretch">
-          {showInputs && (
-            <>
-              <FormControl>
-                <FormLabel>Option 2</FormLabel>
-                <Input
-                  marginBottom={3}
-                  placeholder="Enter option 2 text..."
-                  width="100%"
+          const secondOption =
+            options[index + 1] !== undefined ? (
+              <VStack key={index + 1} spacing={2} width="100%">
+                {showInputs && (
+                  <FormControl>
+                    <Input
+                      focusBorderColor="yellow.400"
+                      marginBottom={3}
+                      placeholder={`Option ${index + 2}`}
+                    />
+                  </FormControl>
+                )}
+                <FileUploader
+                  fieldChange={(file) => onChange(file, index + 1)}
+                  mediaUrl=""
+                  width={"full"}
+                  height={"250px"}
+                  isOptional={true}
                 />
-              </FormControl>
-            </>
-          )}
-          <FileUploader fieldChange={(file) => onChange(file, 1)} mediaUrl="" />
-        </VStack>
+              </VStack>
+            ) : null;
+
+          acc.push(
+            <HStack spacing={4} key={index} width="100%">
+              {firstOption}
+              {secondOption}
+            </HStack>
+          );
+        }
+        return acc;
+      }, [])}
+
+      <HStack spacing={4}>
+        <Button
+          leftIcon={<AddIcon />}
+          variant="ghost"
+          onClick={addOptions}
+          isDisabled={options.length >= 4}
+        >
+          Add Options
+        </Button>
+        <Button
+          leftIcon={<MinusIcon />}
+          colorScheme="red"
+          variant="ghost"
+          onClick={removeOptions}
+          isDisabled={options.length <= 2}
+        >
+          Remove Options
+        </Button>
       </HStack>
     </VStack>
   );

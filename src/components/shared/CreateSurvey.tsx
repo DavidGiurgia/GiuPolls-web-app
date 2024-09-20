@@ -84,6 +84,7 @@ const CreateSurvey = () => {
         <FormControl>
           <FormLabel>Survey Title</FormLabel>
           <Input
+            required
             focusBorderColor="purple.500"
             placeholder="Enter the survey title"
             value={title}
@@ -119,8 +120,12 @@ const CreateSurvey = () => {
             onChange={(value) => setVisibility(value)}
           >
             <HStack spacing="24px">
-              <Radio value="public">Public</Radio>
-              <Radio value="private">Private</Radio>
+              <Radio colorScheme="green" value="public">
+                Public
+              </Radio>
+              <Radio colorScheme="red" value="private">
+                Private
+              </Radio>
               <Radio value="unlisted">Unlisted</Radio>
             </HStack>
           </RadioGroup>
@@ -137,7 +142,23 @@ const CreateSurvey = () => {
           index={activeTab}
           onChange={setActiveTab}
         >
-          <TabList>
+          <TabList
+            sx={{
+              "&::-webkit-scrollbar": {
+                height: "2px",
+              },
+              "&::-webkit-scrollbar-track": {
+                background: "transparent",
+              },
+              "&::-webkit-scrollbar-thumb": {
+                background: "gray.400", // Customize color
+                borderRadius: "10px",
+                
+              },
+            }}
+            overflowX="auto"
+            whiteSpace="nowrap"
+          >
             {polls.map((poll, index) => (
               <Tab
                 key={index}
@@ -230,8 +251,15 @@ const CreateSurvey = () => {
 
         <Divider my={4} />
 
-        <Button colorScheme="blue" mt={4} onClick={handleSubmit}>
-          Post Survey
+        <Button
+          width={"30%"}
+          alignSelf={"end"}
+          borderRadius={50}
+          colorScheme="blue"
+          mt={4}
+          onClick={handleSubmit}
+        >
+          Post
         </Button>
       </VStack>
     </Box>

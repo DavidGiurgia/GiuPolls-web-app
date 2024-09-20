@@ -1,67 +1,40 @@
-import { useState } from "react";
-import {
-  IconButton,
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverArrow,
-  PopoverBody,
-  Grid,
-  Box,
-} from "@chakra-ui/react";
-import { BsEmojiSmile } from "react-icons/bs"; // Pictograma pentru buton
-import { Input } from "@chakra-ui/react";
+import { Button, Popover, PopoverTrigger, PopoverContent, PopoverArrow, PopoverBody, Grid, Box } from "@chakra-ui/react";
 
+
+// Lista de emoji disponibile
 const emojiList = ["😊", "😂", "😍", "😢", "👍", "🙏", "❤️", "🔥", "🎉", "💯"];
 
-const EmojiButton = ({ placeholder }: { placeholder: string }) => {
-  const [inputValue, setInputValue] = useState<string>("");
+type EmojiButtonProps = {
+  emoji: string;
+  onEmojiSelect: (emoji: string) => void;
+};
 
-  const addEmoji = (emoji: string) => {
-    setInputValue((prev) => prev + emoji); // Adaugă emoji la input
-  };
-
+const EmojiButton = ({ emoji, onEmojiSelect }: EmojiButtonProps) => {
   return (
-    <Box display="flex" alignItems="center">
-      <Input
-      focusBorderColor="yellow.400"
-        value={inputValue}
-        onChange={(e) => setInputValue(e.target.value)}
-        placeholder={placeholder}
-        size="md"
-        width="100%"
-        mr={2}
-      />
-
-      {/* Popover for Emoji Button */}
-      <Popover>
-        <PopoverTrigger>
-          <IconButton
-            icon={<BsEmojiSmile />}
-            aria-label="Emoji Button"
-            variant="outline"
-            colorScheme="gray"
-          />
-        </PopoverTrigger>
-        <PopoverContent width="fit">
-          <PopoverArrow />
-          <PopoverBody>
-            <Grid templateColumns="repeat(5, 1fr)" gap={2}>
-              {emojiList.map((emoji) => (
-                <Box
-                  key={emoji}
-                  fontSize="24px"
-                  cursor="pointer"
-                  onClick={() => addEmoji(emoji)}
-                >
-                  {emoji}
-                </Box>
-              ))}
-            </Grid>
-          </PopoverBody>
-        </PopoverContent>
-      </Popover>
-    </Box>
+    <Popover>
+      <PopoverTrigger>
+        <Button variant="outline" colorScheme="gray" fontSize="24px">
+          {emoji}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent width="fit-content">
+        <PopoverArrow />
+        <PopoverBody>
+          <Grid templateColumns="repeat(5, 1fr)" gap={2}>
+            {emojiList.map((emojiOption) => (
+              <Box
+                key={emojiOption}
+                fontSize="24px"
+                cursor="pointer"
+                onClick={() => onEmojiSelect(emojiOption)}
+              >
+                {emojiOption}
+              </Box>
+            ))}
+          </Grid>
+        </PopoverBody>
+      </PopoverContent>
+    </Popover>
   );
 };
 

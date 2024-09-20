@@ -97,8 +97,8 @@ const CreatePoll = () => {
           onChange={(value) => setVisibility(value)}
         >
           <HStack spacing="24px">
-            <Radio value="public">Public</Radio>
-            <Radio value="private">Private</Radio>
+            <Radio colorScheme="green" value="public">Public</Radio>
+            <Radio colorScheme="red" value="private">Private</Radio>
             <Radio value="unlisted">Unlisted</Radio>
           </HStack>
         </RadioGroup>
@@ -106,8 +106,8 @@ const CreatePoll = () => {
 
       <Divider my={4} />
 
-      <Button colorScheme="blue" onClick={handleCreatePoll}>
-        Submit Poll
+      <Button width={{base: 'full', md: '30%'}} alignSelf={'end'} borderRadius={50} colorScheme="blue" onClick={handleCreatePoll}>
+        Post 
       </Button>
     </VStack>
   );

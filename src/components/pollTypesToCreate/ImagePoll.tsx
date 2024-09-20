@@ -32,7 +32,8 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
       {/* Întrebarea principală */}
       <FormControl>
         <Input
-        variant={'flushed'}
+          _placeholder={{ opacity: 1, color: "gray.400" }}
+          variant={"flushed"}
           focusBorderColor="purple.400"
           marginBottom={3}
           placeholder="Type your question here..."
@@ -72,6 +73,7 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
                 mediaUrl=""
                 width={"full"}
                 height={"250px"}
+                isOptional={false}
               />
             </VStack>
           );
@@ -93,6 +95,7 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
                   mediaUrl=""
                   width={"full"}
                   height={"250px"}
+                  isOptional={false}
                 />
               </VStack>
             ) : null;

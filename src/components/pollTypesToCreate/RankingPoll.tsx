@@ -1,40 +1,74 @@
 import { useState } from "react";
 import {
-  HStack,
   VStack,
   FormControl,
-  FormLabel,
   Input,
-  Switch,
   Button,
+  HStack,
+  CloseButton,
+  Collapse,
+  useDisclosure,
+  Box,
 } from "@chakra-ui/react";
+import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { FileUploader } from "../shared";
-import { AddIcon, MinusIcon } from "@chakra-ui/icons";
 
 type RankingPollProps = {
-  onChange: (files: File[], optionIndex: number) => void;
+  onChange: (options: string[]) => void;
 };
 
 const RankingPoll = ({ onChange }: RankingPollProps) => {
-  const [options, setOptions] = useState<string[]>(["", ""]);
-  const [showInputs, setShowInputs] = useState<boolean>(true);
+  const [files, setFiles] = useState<File[]>([]);
   const [question, setQuestion] = useState<string>("");
+  const [options, setOptions] = useState<string[]>(["", ""]);
+  const { isOpen, onToggle } = useDisclosure(); // Control for FileUploader visibility
 
-  const addOptions = () => setOptions([...options, "", ""]);
-  const removeOptions = () => {
-    if (options.length > 2) {
-      setOptions(options.slice(0, -2));
-    }
+  const handleFileChange = (selectedFiles: File[]) => {
+    setFiles(selectedFiles);
+    console.log("Selected files: ", selectedFiles);
   };
+
+  const addOption = () => setOptions([...options, ""]);
+
+  const removeOption = (index: number) =>
+    setOptions(options.filter((_, i) => i !== index));
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+    onChange(newOptions);
+  };
+  
 
   return (
     <VStack spacing={4}>
+      {/* Button to show/hide FileUploader */}
+      <Button
+        rightIcon={<ChevronDownIcon />}
+        onClick={onToggle}
+        mt={1}
+      >
+        Upload image (optional)
+      </Button>
+
+      {/* Collapse component to show or hide FileUploader */}
+      <Collapse in={isOpen} animateOpacity>
+        <Box mt={4} p={2} bg="gray.100" rounded="md" shadow="md">
+          <FileUploader
+            fieldChange={handleFileChange}
+            mediaUrl=""
+            width={"full"}
+          />
+        </Box>
+      </Collapse>
+
       {/* Întrebarea principală */}
       <FormControl>
         <Input
           _placeholder={{ opacity: 1, color: "gray.400" }}
           variant={"flushed"}
-          focusBorderColor="purple.400"
+          focusBorderColor="purple.500"
           marginBottom={3}
           placeholder="Type your question here..."
           value={question}
@@ -42,93 +76,36 @@ const RankingPoll = ({ onChange }: RankingPollProps) => {
         />
       </FormControl>
 
-      {/* Switch pentru a arăta sau ascunde inputurile */}
-      <FormControl display="flex" alignItems="center">
-        <FormLabel htmlFor="toggle-inputs" mb="0">
-          Use option text
-        </FormLabel>
-        <Switch
-          id="toggle-inputs"
-          isChecked={showInputs}
-          onChange={() => setShowInputs(!showInputs)}
-        />
+      <FormControl>
+        {options.map((option, index) => (
+          <HStack key={index}>
+            <Input
+              focusBorderColor="yellow.400"
+              my={1}
+              placeholder={`Option ${index + 1}`}
+              value={option}
+              onChange={(e) => handleOptionChange(index, e.target.value)}
+            />
+            {options.length > 2 && (
+              <CloseButton
+                size="md"
+                onClick={() => removeOption(index)}
+              ></CloseButton>
+            )}
+          </HStack>
+        ))}
       </FormControl>
 
-      {/* Aranjare opțiuni două câte două */}
-      {options.reduce<JSX.Element[]>((acc, _, index) => {
-        if (index % 2 === 0) {
-          const firstOption = (
-            <VStack key={index} spacing={2} width="100%">
-              {showInputs && (
-                <FormControl>
-                  <Input
-                    focusBorderColor="yellow.400"
-                    marginBottom={3}
-                    placeholder={`Option ${index + 1}`}
-                  />
-                </FormControl>
-              )}
-              <FileUploader
-                fieldChange={(file) => onChange(file, index)}
-                mediaUrl=""
-                width={"full"}
-                height={"250px"}
-                isOptional={true}
-              />
-            </VStack>
-          );
-
-          const secondOption =
-            options[index + 1] !== undefined ? (
-              <VStack key={index + 1} spacing={2} width="100%">
-                {showInputs && (
-                  <FormControl>
-                    <Input
-                      focusBorderColor="yellow.400"
-                      marginBottom={3}
-                      placeholder={`Option ${index + 2}`}
-                    />
-                  </FormControl>
-                )}
-                <FileUploader
-                  fieldChange={(file) => onChange(file, index + 1)}
-                  mediaUrl=""
-                  width={"full"}
-                  height={"250px"}
-                  isOptional={true}
-                />
-              </VStack>
-            ) : null;
-
-          acc.push(
-            <HStack spacing={4} key={index} width="100%">
-              {firstOption}
-              {secondOption}
-            </HStack>
-          );
-        }
-        return acc;
-      }, [])}
-
-      <HStack spacing={4}>
+      {options.length < 5 && (
         <Button
+          alignSelf={"start"}
           leftIcon={<AddIcon />}
           variant="ghost"
-          onClick={addOptions}
-          isDisabled={options.length >= 4}
+          onClick={addOption}
         >
-          Add Options
+          Add Option
         </Button>
-        <Button
-          leftIcon={<MinusIcon />}
-          colorScheme="red"
-          variant="ghost"
-          onClick={removeOptions}
-          isDisabled={options.length <= 2}
-        >
-          Remove Options
-        </Button>
-      </HStack>
+      )}
     </VStack>
   );
 };

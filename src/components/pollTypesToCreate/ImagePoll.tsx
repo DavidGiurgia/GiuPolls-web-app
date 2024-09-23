@@ -1,11 +1,12 @@
 import {
   VStack,
-  HStack,
   FormControl,
   FormLabel,
   Input,
   Button,
   Switch,
+  SimpleGrid,
+  HStack,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { FileUploader } from "../shared";
@@ -54,80 +55,49 @@ const ImagePoll = ({ onChange }: ImagePollProps) => {
         />
       </FormControl>
 
-      {/* Aranjare opțiuni două câte două */}
-      {options.reduce<JSX.Element[]>((acc, _, index) => {
-        if (index % 2 === 0) {
-          const firstOption = (
-            <VStack key={index} spacing={2} width="100%">
-              {showInputs && (
-                <FormControl>
-                  <Input
-                    focusBorderColor="yellow.400"
-                    marginBottom={3}
-                    placeholder={`Option ${index + 1}`}
-                  />
-                </FormControl>
-              )}
-              <FileUploader
-                fieldChange={(file) => onChange(file, index)}
-                mediaUrl=""
-                width={"full"}
-                height={"250px"}
-                isOptional={false}
-              />
-            </VStack>
-          );
-
-          const secondOption =
-            options[index + 1] !== undefined ? (
-              <VStack key={index + 1} spacing={2} width="100%">
-                {showInputs && (
-                  <FormControl>
-                    <Input
-                      focusBorderColor="yellow.400"
-                      marginBottom={3}
-                      placeholder={`Option ${index + 2}`}
-                    />
-                  </FormControl>
-                )}
-                <FileUploader
-                  fieldChange={(file) => onChange(file, index + 1)}
-                  mediaUrl=""
-                  width={"full"}
-                  height={"250px"}
-                  isOptional={false}
+      {/* Aranjare opțiuni în grid */}
+      <SimpleGrid columns={{ base: 1, sm: 2 }} spacing={4} width="100%">
+        {options.map((_, index) => (
+          <VStack key={index} spacing={2} width="100%">
+            {showInputs && (
+              <FormControl>
+                <Input
+                  focusBorderColor="yellow.400"
+                  marginBottom={3}
+                  placeholder={`Option ${index + 1}`}
                 />
-              </VStack>
-            ) : null;
+              </FormControl>
+            )}
+            <FileUploader
+              fieldChange={(file) => onChange(file, index)}
+              mediaUrl=""
+              width={"full"}
+            />
+          </VStack>
+        ))}
+      </SimpleGrid>
 
-          acc.push(
-            <HStack spacing={4} key={index} width="100%">
-              {firstOption}
-              {secondOption}
-            </HStack>
-          );
-        }
-        return acc;
-      }, [])}
-
-      <HStack spacing={4}>
-        <Button
-          leftIcon={<AddIcon />}
-          variant="ghost"
-          onClick={addOptions}
-          isDisabled={options.length >= 4}
-        >
-          Add Options
-        </Button>
-        <Button
-          leftIcon={<MinusIcon />}
-          colorScheme="red"
-          variant="ghost"
-          onClick={removeOptions}
-          isDisabled={options.length <= 2}
-        >
-          Remove Options
-        </Button>
+      <HStack alignSelf={'start'}>
+        {options.length <= 2 ? (
+          <Button
+            leftIcon={<AddIcon />}
+            variant="ghost"
+            onClick={addOptions}
+            isDisabled={options.length >= 4}
+          >
+            Add Options
+          </Button>
+        ) : (
+          <Button
+            leftIcon={<MinusIcon />}
+            colorScheme="red"
+            variant="ghost"
+            onClick={removeOptions}
+            isDisabled={options.length <= 2}
+          >
+            Remove Options
+          </Button>
+        )}
       </HStack>
     </VStack>
   );

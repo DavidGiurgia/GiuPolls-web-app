@@ -15,7 +15,7 @@ import {
 import { FileUploader } from "../shared";
 import { useState } from "react";
 import ChoiceButtons from "../shared/ChoiceButton";
-import EmojiButton from "../shared/EmojiButton"; 
+import EmojiButton from "../shared/EmojiButton";
 import { AddIcon, ChevronDownIcon, MinusIcon } from "@chakra-ui/icons";
 
 type RatingPollProps = {
@@ -54,8 +54,14 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
   };
 
   const addEmoji = () => {
-    if (emojis.length < 5) {
+    if (emojis.length < 8) {
       setEmojis([...emojis, "😊"]);
+    }
+  };
+
+  const removeEmoji = () => {
+    if (emojis.length > 3) {
+      setEmojis(emojis.slice(0, emojis.length - 1)); // Remove the last emoji
     }
   };
 
@@ -73,7 +79,11 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
       </FormControl>
 
       {/* Button to show/hide FileUploader */}
-      <Button colorScheme="yellow" rightIcon={<ChevronDownIcon  />} onClick={onToggle} mt={1}>
+      <Button
+        rightIcon={<ChevronDownIcon />}
+        onClick={onToggle}
+        mt={1}
+      >
         Upload image (optional)
       </Button>
 
@@ -84,15 +94,14 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
             fieldChange={handleFileChange}
             mediaUrl=""
             width={"full"}
-            height={"400px"}
           />
         </Box>
       </Collapse>
 
       <FormControl>
-        <Box my={5} width="full">
+        <Box  my={5} width="full">
           {/* Align ChoiceButtons to the right */}
-          <Box alignSelf="center" display="flex" justifyContent="center">
+          <Box alignSelf="center" display="flex" justifyContent="start">
             <ChoiceButtons
               options={["Stars", "Emojis", "Slider"]}
               onSelectionChange={handleSelectionChange}
@@ -109,14 +118,11 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
                   </Box>
                 ))}
               </HStack>
-              <HStack justifyContent={'center'} mt={2}>
+              <HStack justifyContent={"center"} mt={2}>
                 <Button onClick={addStar} isDisabled={starCount >= 10}>
                   <AddIcon />
                 </Button>
-                <Button
-                  onClick={removeStar}
-                  isDisabled={starCount <= 3}
-                >
+                <Button onClick={removeStar} isDisabled={starCount <= 3}>
                   <MinusIcon />
                 </Button>
               </HStack>
@@ -124,8 +130,13 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
           )}
 
           {selectedOption === "Emojis" && (
-            <Box alignSelf="center" display="flex" justifyContent="center" my={5}>
-              <HStack spacing={4}>
+            <Box
+              alignSelf="center"
+              display="flex"
+              justifyContent="center"
+              my={5}
+            >
+              <HStack width={'auto'} spacing={4}>
                 {emojis.map((emoji, index) => (
                   <EmojiButton
                     key={index}
@@ -136,8 +147,13 @@ const RatingPoll = ({ onChange }: RatingPollProps) => {
                   />
                 ))}
                 {emojis.length < 5 && (
-                  <Button onClick={addEmoji} colorScheme="teal">
+                  <Button onClick={addEmoji}>
                     <AddIcon />
+                  </Button>
+                )}
+                {emojis.length > 3 && (
+                  <Button onClick={removeEmoji} color="red.500">
+                    <MinusIcon />
                   </Button>
                 )}
               </HStack>

@@ -7,8 +7,8 @@ import {
   TabPanel,
   Heading,
 } from "@chakra-ui/react";
-import CreatePoll from "../../components/shared/CreatePoll";
-import CreateSurvey from "../../components/shared/CreateSurvey";
+import PollForm from "../../components/CreatePoll/PollForm";
+import SurveyForm from "../../components/CreateSurvey/SurveyForm";
 
 const Create = () => {
   return (
@@ -25,10 +25,10 @@ const Create = () => {
 
         <TabPanels>
           <TabPanel>
-            <CreatePoll />
+            <PollForm />
           </TabPanel>
           <TabPanel>
-            <CreateSurvey />
+            <SurveyForm />
           </TabPanel>
         </TabPanels>
       </Tabs>

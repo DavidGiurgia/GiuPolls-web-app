@@ -23,6 +23,8 @@ import {
   MenuItem,
   Radio,
   RadioGroup,
+  Collapse,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { DeleteIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import {
@@ -33,8 +35,10 @@ import {
   TextPoll,
   RankingPoll,
 } from "../pollTypesToCreate";
+import { IoEye } from "react-icons/io5";
+import { FileUploader } from "../shared";
 
-const CreateSurvey = () => {
+const SurveyForm = () => {
   const [polls, setPolls] = useState<any[]>([]);
   const [title, setTitle] = useState<string>("");
   const [description, setdescription] = useState<string>("");
@@ -42,7 +46,14 @@ const CreateSurvey = () => {
   const [visibility, setVisibility] = useState<string>("public");
   const [activeTab, setActiveTab] = useState<number>(0);
   const toast = useToast();
+  const [files, setFiles] = useState<File[]>([]);
+  const { isOpen, onToggle } = useDisclosure(); // For toggling visibility
 
+  // Function to handle files from FileUploader
+  const handleFileChange = (selectedFiles: File[]) => {
+    setFiles(selectedFiles);
+    console.log("Selected files: ", selectedFiles);
+  };
   const addNewPoll = (pollType: string) => {
     if (polls.length >= 10) {
       toast({
@@ -91,6 +102,24 @@ const CreateSurvey = () => {
             onChange={(e) => setTitle(e.target.value)}
           />
         </FormControl>
+
+        <Button
+          rightIcon={<ChevronDownIcon />}
+          onClick={onToggle}
+          mt={1}
+        >
+          Upload thumbnail
+        </Button>
+        {/* FileUploader with Collapse */}
+        <Collapse in={isOpen} animateOpacity>
+          <Box mt={4} p={2} bg="gray.100" rounded="md" shadow="md">
+            <FileUploader
+              fieldChange={handleFileChange}
+              mediaUrl=""
+              width={"full"}
+            />
+          </Box>
+        </Collapse>
 
         <FormControl>
           <FormLabel>Description</FormLabel>
@@ -145,7 +174,7 @@ const CreateSurvey = () => {
           <TabList
             sx={{
               "&::-webkit-scrollbar": {
-                height: "2px",
+                height: "8px",
               },
               "&::-webkit-scrollbar-track": {
                 background: "transparent",
@@ -153,13 +182,12 @@ const CreateSurvey = () => {
               "&::-webkit-scrollbar-thumb": {
                 background: "gray.400", // Customize color
                 borderRadius: "10px",
-                
               },
             }}
             overflowX="auto"
             whiteSpace="nowrap"
           >
-            {polls.map((poll, index) => (
+            {polls.map((_, index) => (
               <Tab
                 key={index}
                 display={"flex"}
@@ -251,19 +279,29 @@ const CreateSurvey = () => {
 
         <Divider my={4} />
 
-        <Button
-          width={"30%"}
-          alignSelf={"end"}
-          borderRadius={50}
-          colorScheme="blue"
-          mt={4}
-          onClick={handleSubmit}
-        >
-          Post
-        </Button>
+        <HStack justifyContent={"end"}>
+          <Button
+            leftIcon={<IoEye />}
+            width={{ base: "full", md: "auto" }}
+            px={{ base: "auto", md: "20px" }}
+            borderRadius={50}
+            onClick={handleSubmit}
+          >
+            Preview
+          </Button>
+          <Button
+            px={{ base: "auto", md: "50px" }}
+            width={{ base: "full", md: "auto" }}
+            borderRadius={50}
+            colorScheme="yellow"
+            onClick={handleSubmit}
+          >
+            Post
+          </Button>
+        </HStack>
       </VStack>
     </Box>
   );
 };
 
-export default CreateSurvey;
+export default SurveyForm;

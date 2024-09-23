@@ -38,8 +38,9 @@ const LeftSidebar = () => {
               <NavLink key={link.label} to={link.route}>
                 <Button
                   variant={isActive ? "solid" : "ghost"}
-                  colorScheme={isActive ? "yellow" : "gray"}
+                  color={isActive ? "" : ""}
                   leftIcon={link.icon}
+                  iconSpacing={3}
                   justifyContent="flex-start"
                   fontWeight={isActive ? "bold" : "normal"}
                   width="100%"

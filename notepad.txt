@@ -1,0 +1,132 @@
+import { useState } from "react";
+import {
+  VStack,
+  FormControl,
+  Input,
+  Button,
+  Collapse,
+  Box,
+  HStack,
+  CloseButton,
+} from "@chakra-ui/react";
+import { FileUploader } from "../shared";
+import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
+import { CiImageOn } from "react-icons/ci";
+
+type RankingPollProps = {
+  onChange: (files: File[], optionIndex: number) => void;
+};
+
+const RankingPoll = ({ onChange }: RankingPollProps) => {
+  const [options, setOptions] = useState<string[]>(["", ""]);
+  const [isOpen, setIsOpen] = useState<boolean[]>([false, false]);
+  const [files, setFiles] = useState<(File[] | null)[]>([null, null]);
+  const [question, setQuestion] = useState<string>("");
+
+  const handleToggle = (index: number) => {
+    const newIsOpen = [...isOpen];
+    newIsOpen[index] = !newIsOpen[index];
+    setIsOpen(newIsOpen);
+  };
+
+  const handleFileChange = (selectedFile: File[], index: number) => {
+    const updatedFiles = [...files];
+    updatedFiles[index] = selectedFile;
+    setFiles(updatedFiles);
+    onChange(selectedFile, index); // Trigger parent change
+  };
+
+  const addOption = () => {
+    setOptions([...options, ""]);
+    setIsOpen([...isOpen, false]);
+    setFiles([...files, null]); // Add corresponding file slot
+  };
+
+  const removeOption = (index: number) => {
+    const newOptions = [...options];
+    const newIsOpen = [...isOpen];
+    const newFiles = [...files];
+  
+    // Remove the corresponding option, collapse state, and file
+    newOptions.splice(index, 1);
+    newIsOpen.splice(index, 1);
+    newFiles.splice(index, 1);
+  
+    // Update the states
+    setOptions(newOptions);
+    setIsOpen(newIsOpen);
+    setFiles(newFiles);
+  };
+
+  const handleOptionChange = (index: number, value: string) => {
+    const newOptions = [...options];
+    newOptions[index] = value;
+    setOptions(newOptions);
+  };
+
+  return (
+    <VStack spacing={4}>
+      {/* Main Question */}
+      <FormControl>
+        <Input
+          _placeholder={{ opacity: 1, color: "gray.400" }}
+          variant={"flushed"}
+          focusBorderColor="purple.500"
+          marginBottom={3}
+          placeholder="Type your question here..."
+          value={question}
+          onChange={(e) => setQuestion(e.target.value)}
+        />
+      </FormControl>
+
+      {/* Options */}
+      {options.map((option, index) => (
+        <VStack key={index} spacing={2} width="100%">
+          <HStack width="100%" spacing={4} alignItems="center">
+            <Button
+              colorScheme="yellow"
+              rightIcon={<ChevronDownIcon />}
+              onClick={() => handleToggle(index)}
+            >
+              <CiImageOn fontSize={"40px"} />
+            </Button>
+            <Input
+              focusBorderColor="yellow.400"
+              value={option}
+              placeholder={`Option ${index + 1}`}
+              onChange={(e) => handleOptionChange(index, e.target.value)}
+            />
+            {options.length > 2 && (
+              <CloseButton size="md" onClick={() => removeOption(index)} />
+            )}
+          </HStack>
+
+          <Collapse in={isOpen[index]} animateOpacity>
+            <Box mt={4} p={2} bg="gray.100" rounded="md" shadow="md">
+              <FileUploader
+                fieldChange={(file) => handleFileChange(file, index)}
+                mediaUrl=""
+                width={"full"}
+                height={"400px"}
+              />
+            </Box>
+          </Collapse>
+        </VStack>
+      ))}
+
+      {/* Add Option Button */}
+      {options.length < 4 && (
+        <Button
+        alignSelf={"start"}
+        leftIcon={<AddIcon />}
+        variant="ghost"
+        onClick={addOption}
+      >
+        Add Option
+      </Button>
+      )}
+    </VStack>
+  );
+};
+
+export default RankingPoll;

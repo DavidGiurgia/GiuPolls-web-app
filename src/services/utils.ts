@@ -1,3 +1,4 @@
+import { Poll } from "../types";
 
 export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
@@ -50,3 +51,19 @@ export const multiFormatDateString = (timestamp: string = ""): string => {
 export const checkIsLiked = (likeList: string[], userId: string) => {
   return likeList.includes(userId);
 };
+
+// utils.ts
+
+// Serialize Poll
+export const serializePoll = (poll: Poll): string => {
+    return JSON.stringify(poll);
+  };
+  
+  // Deserialize Poll
+  export const deserializePoll = (data: string): Poll => {
+    const parsed = JSON.parse(data);
+    parsed.createdAt = new Date(parsed.createdAt);
+    parsed.updatedAt = new Date(parsed.updatedAt);
+    return parsed as Poll;
+  };
+  

@@ -3,27 +3,23 @@ import { CiImageOn } from "react-icons/ci";
 import { useCallback, useState } from "react";
 import { FileWithPath, useDropzone } from "react-dropzone";
 import { Box, Image, Text, VStack } from "@chakra-ui/react";
-import { convertFileToUrl } from "../../lib/utils";
+import { convertFileToUrl } from "../../services/utils";
 
 type FileUploaderProps = {
   fieldChange: (files: File[]) => void;
   mediaUrl: string;
   width: string;
-  height: string;
 };
 
 const FileUploader = ({
   fieldChange,
   mediaUrl,
-  width,
-  height
+  width
 }: FileUploaderProps) => {
-  const [file, setFile] = useState<File[]>([]);
   const [fileUrl, setFileUrl] = useState<string>(mediaUrl);
 
   const onDrop = useCallback(
     (acceptedFiles: FileWithPath[]) => {
-      setFile(acceptedFiles);
       fieldChange(acceptedFiles);
       setFileUrl(convertFileToUrl(acceptedFiles[0]));
     },
@@ -40,7 +36,7 @@ const FileUploader = ({
   return (
     <Box
       width={width}
-      height={height}
+      height='auto'
       {...getRootProps()}
       bg="gray.700"
       borderRadius="xl"
@@ -71,12 +67,12 @@ const FileUploader = ({
             alt="image"
             width="100%"
             height="100%"
-            objectFit="contain" // Sau 'contain' dacă dorești să vezi întreaga imagine
+            objectFit="cover" // Sau 'contain' dacă dorești să vezi întreaga imagine
           />
           {/* Adaugă un overlay pentru drag & drop */}
         </Box>
       ) : (
-        <VStack spacing={4}>
+        <VStack padding={'80px'} spacing={4}>
           <CiImageOn color="white" fontSize={"50px"} />
           <Text textAlign={"center"} fontSize="lg" color="gray.200">
             Drag photo here or <br />

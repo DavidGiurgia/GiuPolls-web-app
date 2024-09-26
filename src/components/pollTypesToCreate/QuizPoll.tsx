@@ -59,7 +59,7 @@ const QuizPoll = ({ onChange }: QuizPollProps) => {
 
       {/* FileUploader with Collapse */}
       <Collapse in={isOpen} animateOpacity>
-        <Box mt={4} p={4} bg="gray.100" rounded="md" shadow="md">
+        <Box mt={4} p={2} bg="gray.100" rounded="md" shadow="md">
           <FileUploader
             fieldChange={handleFileChange}
             mediaUrl=""

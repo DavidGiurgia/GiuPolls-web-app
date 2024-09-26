@@ -1,37 +1,45 @@
-import { FaHome, FaCompass, FaPoll, FaPlus, FaHeart } from "react-icons/fa";
 import { Avatar } from "@chakra-ui/react";
+import { GoHome, GoHomeFill } from "react-icons/go";
+import { MdExplore, MdOutlineExplore, MdOutlinePoll, MdOutlineQuiz, MdPoll, MdQuiz } from "react-icons/md";
+import { PiQuotesDuotone, PiQuotesFill } from "react-icons/pi";
 
 export const sidebarLinks = [
   {
     route: "/",
     label: "Home",
-    icon: <FaHome style={{ fontSize: '20px' }}  />,
+    activeIcon: <GoHomeFill style={{ fontSize: '24px' }}  />,
+    inactiveIcon: <GoHome style={{ fontSize: '24px' }} />
   },
   {
     route: "/explore",
     label: "Explore",
-    icon: <FaCompass style={{ fontSize: '20px' }}  />,
+    activeIcon: <MdExplore style={{ fontSize: '24px' }}  />,
+    inactiveIcon: <MdOutlineExplore style={{ fontSize: '24px' }} />
   },
   {
-    route: "/short-polls",
-    label: "Shorts",
-    icon: <FaPoll style={{ fontSize: '20px' }}  />,
+    route: "/polls",
+    label: "Polls",
+    activeIcon: <MdPoll style={{ fontSize: '24px' }}  />,
+    inactiveIcon: <MdOutlinePoll style={{ fontSize: '24px' }} />
   },
   {
-    route: "/notifications",
-    label: "Notifications",
-    icon: <FaHeart style={{ fontSize: '20px' }} />,
+    route: "/quizzes",
+    label: "Quizzes",
+    activeIcon: <MdQuiz style={{ fontSize: '24px' }}  />,
+    inactiveIcon: <MdOutlineQuiz style={{ fontSize: '24px' }} />
   },
   {
-    route: "/create",
-    label: "Create",
-    icon: <FaPlus style={{ fontSize: '20px' }}  />,
+    route: "/quotes",
+    label: "Quotes",
+    activeIcon: <PiQuotesFill style={{ fontSize: '24px' }}  />,
+    inactiveIcon: <PiQuotesDuotone style={{ fontSize: '24px' }} />
   },
   {
-    route: "/user-profile",
+    route: "/profile",
     label: "Profile",
-    icon: <Avatar size="xs" name="Giurgia David" />,
-  },
+    activeIcon: <Avatar size="xs" name="Giurgia David" />,
+    inactiveIcon: <Avatar size="xs" name="Giurgia David" />,
+  }
 ];
 
 

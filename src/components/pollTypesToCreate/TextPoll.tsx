@@ -1,4 +1,4 @@
-import { useState} from "react";
+import { useState } from "react";
 import {
   VStack,
   FormControl,
@@ -9,30 +9,25 @@ import {
   Collapse,
   useDisclosure,
   Box,
-  FormErrorMessage,
 } from "@chakra-ui/react";
 import { AddIcon, ChevronDownIcon } from "@chakra-ui/icons";
 import { FileUploader } from "../shared";
-import { validateTextPoll } from "../../services/validations"; // Import validation logic
+import { TextPoll as TextPollType} from "../../types";
 
-type TextPollProps = {
-  onChange: (data: { options: string[]; question: string; isValid: boolean }) => void;
-};
+interface TextPollProps {
+  onChange: (pollData: TextPollType) => void; // Folosește tipul TextPoll direct
+}
+
 
 const TextPoll = ({ onChange }: TextPollProps) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [image, setImage] = useState<File[]>([]);
   const [question, setQuestion] = useState<string>("");
   const [options, setOptions] = useState<string[]>(["", ""]);
-  const [errors, setErrors] = useState({
-    questionError: "",
-    optionsError: "",
-  });
-
   const { isOpen, onToggle } = useDisclosure(); // Control for FileUploader visibility
 
   // Handle file upload changes
-  const handleFileChange = (selectedFiles: File[]) => {
-    setFiles(selectedFiles);
+  const handleFileChange = (selectedImage: File[]) => {
+    setImage(selectedImage);
   };
 
   // Add a new option to the list
@@ -50,41 +45,28 @@ const TextPoll = ({ onChange }: TextPollProps) => {
     validateForm(question, newOptions); // Revalidate when options change
   };
 
-  // Validate form inputs (question and options)
-  const validateForm = (questionValue: string, optionsValue: string[]) => {
-    const pollData = { question: questionValue, options: optionsValue };
-
-    // Validate using the validation function
-    const isValid = validateTextPoll(pollData); //aici eroarea
-
-    let questionError = "";
-    let optionsError = "";
-
-    if (!questionValue) {
-      questionError = "Question is required.";
-    }
-
-    if (optionsValue.length < 2 || optionsValue.length > 4) {
-      optionsError = "You need between 2 to 4 options.";
-    } else if (optionsValue.some(option => !option.trim())) {
-      optionsError = "Options cannot be empty.";
-    }
-
-    setErrors({ questionError, optionsError });
-
-    // Notify parent component
-    onChange({
-      question: questionValue,
-      options: optionsValue,
-      isValid: isValid && !questionError && !optionsError,
-    });
-  };
-
   // Handle question input changes
   const handleQuestionChange = (value: string) => {
     setQuestion(value);
     validateForm(value, options); // Revalidate when question changes
   };
+
+  // Simple validation: check if question or any option is empty
+  const validateForm = (questionValue: string, optionsValue: string[]) => {
+    const isValid = questionValue.trim() !== "" && optionsValue.every(option => option.trim() !== "");
+    onChange({
+      id: "", // Completează cu un ID generat sau lăsa-l gol pentru acum
+      type: "TextPoll", // Tipul specific sondajului
+      question: questionValue,
+      options: optionsValue.map((opt) => ({ text: opt })), // Mapare opțiuni în structura { text: string }
+      image, // Imaginea uploadată
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      visibility: 'public', // Setează vizibilitatea conform logicii tale
+      isValid,
+    });
+  };
+  
 
   return (
     <VStack spacing={4}>
@@ -100,8 +82,8 @@ const TextPoll = ({ onChange }: TextPollProps) => {
         </Box>
       </Collapse>
 
-      {/* Question input with validation error */}
-      <FormControl isInvalid={!!errors.questionError}>
+      {/* Question input */}
+      <FormControl>
         <Input
           _placeholder={{ opacity: 1, color: "gray.400" }}
           variant={"flushed"}
@@ -111,13 +93,10 @@ const TextPoll = ({ onChange }: TextPollProps) => {
           value={question}
           onChange={(e) => handleQuestionChange(e.target.value)}
         />
-        {errors.questionError && (
-          <FormErrorMessage>{errors.questionError}</FormErrorMessage>
-        )}
       </FormControl>
 
-      {/* Options input with validation error */}
-      <FormControl isInvalid={!!errors.optionsError}>
+      {/* Options input */}
+      <FormControl>
         {options.map((option, index) => (
           <HStack key={index}>
             <Input
@@ -132,13 +111,10 @@ const TextPoll = ({ onChange }: TextPollProps) => {
             )}
           </HStack>
         ))}
-        {errors.optionsError && (
-          <FormErrorMessage>{errors.optionsError}</FormErrorMessage>
-        )}
       </FormControl>
 
       {/* Add new option button */}
-      {options.length < 5 && (
+      {options.length < 4 && (
         <Button alignSelf={"start"} leftIcon={<AddIcon />} variant="ghost" onClick={addOption}>
           Add Option
         </Button>

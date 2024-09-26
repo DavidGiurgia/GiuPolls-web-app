@@ -21,12 +21,12 @@ const App = () => {
         <Route element={<RootLayout />}>
           <Route index element={<Home />} />
           <Route path="/explore" element={<Home />} />
-          <Route path="/short-polls" element={<Home />} />
-          <Route path="/notifications" element={<Home />} />
-          <Route path="/create" element={<Create />} />
-          <Route path="/user-profile" element={<Home />} />
+          <Route path="/polls" element={<Home />} />
+          <Route path="/quizzes" element={<Home />} />
+          <Route path="/quotes" element={<Home />} />
         </Route>
 
+        <Route path="/create" element={<Create />} />
         <Route path="*" element={<h1>Not found</h1>} />
       </Routes>
     </Flex>

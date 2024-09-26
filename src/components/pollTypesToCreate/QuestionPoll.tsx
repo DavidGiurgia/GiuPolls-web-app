@@ -1,7 +1,6 @@
 import { useState } from "react";
 import {
   FormControl,
-  FormErrorMessage,
   Input,
   Button,
   Box,
@@ -11,38 +10,45 @@ import {
 } from "@chakra-ui/react";
 import { FileUploader } from "../shared";
 import { ChevronDownIcon } from "@chakra-ui/icons";
+import { QuestionPoll as QuestionPollType} from "../../types";
 
 type QuestionPollProps = {
-  onChange: (data: { question: string; files: File[]; isValid: boolean }) => void;
+  onChange: (pollData: QuestionPollType) => void; 
 };
 
 const QuestionPoll = ({ onChange }: QuestionPollProps) => {
-  const [files, setFiles] = useState<File[]>([]);
+  const [image, setImage] = useState<File[]>([]);
   const [question, setQuestion] = useState<string>("");
-  const [error, setError] = useState<string | null>(null); // State for validation error
   const { isOpen, onToggle } = useDisclosure();
 
-  const handleFileChange = (selectedFiles: File[]) => {
-    setFiles(selectedFiles);
-    // Pass the updated question, files, and validation state to the parent
-    onChange({ question, files: selectedFiles, isValid: !error && question.length >= 2 });
+  // Handle file upload changes
+  const handleFileChange = (selectedImage: File[]) => {
+    setImage(selectedImage);
   };
 
   const validateQuestion = (value: string) => {
-    if (value.length < 2) {
-      setError("Question must be at least 2 characters long.");
-    } else {
-      setError(null); // Clear error if validation passes
-    }
     setQuestion(value);
-    // Pass the updated question, files, and validation state to the parent
-    onChange({ question: value, files, isValid: !error && value.length >= 2 });
+    validateForm(value); 
   };
 
+  // Simple validation: check if question or any option is empty
+  const validateForm = (questionValue: string) => {
+    const isValid = questionValue.trim() !== "";
+    onChange({
+      id: "", // Completează cu un ID generat sau lăsa-l gol pentru acum
+      type: "QuestionPoll", // Tipul specific sondajului
+      question: questionValue,
+      image, // Imaginea uploadată
+      createdAt: new Date(),
+      updatedAt: new Date(),
+      visibility: 'draft', // Setează vizibilitatea conform logicii tale
+      isValid,
+    });
+  };
   return (
     <VStack spacing={4}>
       {/* Question Input with Validation */}
-      <FormControl isInvalid={!!error}>
+      <FormControl>
         <Input
           _placeholder={{ opacity: 1, color: "gray.400" }}
           variant={"flushed"}
@@ -52,7 +58,6 @@ const QuestionPoll = ({ onChange }: QuestionPollProps) => {
           value={question}
           onChange={(e) => validateQuestion(e.target.value)} // Validate on change
         />
-        {error && <FormErrorMessage>{error}</FormErrorMessage>} {/* Display error message */}
       </FormControl>
 
       {/* Optional Image Upload */}

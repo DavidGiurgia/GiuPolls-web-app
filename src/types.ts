@@ -1,19 +1,19 @@
 // Define base poll structure
 export interface BasePoll {
     id: string;
-    type: string;  // Add this line
+    type: string;  
     question: string;
-    image?: File | string; // Optional image, can be a File or URL
+    image?: File[] | string; // Optional image, can be a File or URL
     createdAt: Date;
     updatedAt: Date;
     visibility: 'public' | 'private' | 'draft';
+    isValid: boolean;
   }
   
   // Question Poll
 export interface QuestionPoll extends BasePoll {
   type: 'QuestionPoll'; // Specify type
 }
-  
 
 // Text Poll
 export interface TextOption {
@@ -26,8 +26,8 @@ export interface TextPoll extends BasePoll {
 
 // Image Poll
 export interface ImageOption {
-  image: File | string; // Optional image, can be a File or URL
-  text?: string; // Optional text associated with the image
+  image: File | string | undefined; // Optional image, can be a File or URL
+  text?: string; // Optional text associated with the image 
 }
 export interface ImagePoll extends BasePoll {
   type: 'ImagePoll'; // Specify type

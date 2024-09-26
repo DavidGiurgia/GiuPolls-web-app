@@ -4,25 +4,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-
-import { extendTheme, type ThemeConfig } from '@chakra-ui/react'
-import { mode } from '@chakra-ui/theme-tools';
-
-const styles = {
-  global:(props) => ({
-    body:{
-      bg:mode("whiteAlpha", "#181818")(props),
-      color:mode("gray.900", "whiteAlpha")(props)
-    }
-  })
-}
-
-const config: ThemeConfig = {
-  initialColorMode: 'light',
-  useSystemColorMode: false,
-}
-
-const theme = extendTheme({ config, styles })
+import theme from "./theme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
